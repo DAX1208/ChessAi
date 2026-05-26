@@ -1,0 +1,196 @@
+{
+  "name": "AI Chess Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "id": "525de15a-3266-4e32-9398-4d47651daeb1",
+      "name": "When Chat Message Received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -368
+      ],
+      "webhookId": "chess-chatbot-webhook-001",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "id": "f9802017-50a3-4531-86e3-609ba9649bd7",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        704,
+        -144
+      ],
+      "notesInFlow": false,
+      "retryOnFail": false,
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f6271199-d237-4708-9095-35b37cd28790",
+      "name": "SerpAPI Web Search",
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        912,
+        -192
+      ],
+      "credentials": {
+        "serpApi": {
+          "id": "GtC6SGO6rJ6dtXeu",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an expert chess coach and analyst assistant.\n\nROLE:\n- Analyze chess games and moves provided by the user\n- Identify blunders, mistakes, and inaccuracies\n- Suggest better alternative moves\n- Give clear, encouraging coaching advice\n\nANALYSIS RULES:\n- Always identify the turning point of the game\n- Explain WHY a move was bad in simple terms\n- Suggest what move should have been played instead\n- Break analysis into: Opening, Middlegame, Endgame\n\nSEARCH RULES:\n- Use SerpAPI ONLY for:\n  * Current chess news\n  * Live tournament rankings\n  * Recent player ratings\n- Do NOT use search for basic chess knowledge\n\nRESPONSE FORMAT:\n- Keep responses under 150 words for simple questions\n- For full game analysis use detailed format\n- Always end with 1 improvement tip\n- Use encouraging, coaching tone\n\nIMPORTANT:\n- Never make up moves or evaluations\n- If unsure, say so honestly\n- Always ask if user wants deeper analysis"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        640,
+        -368
+      ],
+      "id": "526ae270-04ff-4dc9-adda-f49d182cdab3",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "notesInFlow": true,
+      "maxTries": 2,
+      "waitBetweenTries": 100
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {
+          "maxTokensToSample": 1500,
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -144
+      ],
+      "id": "8c83bd53-a0d2-4d69-ac12-b5901eecee49",
+      "name": "Groq Chat Model",
+      "notesInFlow": true,
+      "credentials": {
+        "groqApi": {
+          "id": "yijsRFsuB0wZlV4J",
+          "name": "Groq account 2"
+        }
+      },
+      "notes": "Chess Analysis Bot - Groq qwen3-32b\nAnalyzes games and gives coaching tips"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Chat Message Received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI Web Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "0d021efc-d1d9-4183-ad3f-c84114cd59d3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fe1216196bf66cea97cb63acfcdc6053a58079b7d50c17a6c3057ca93b6e674c"
+  },
+  "id": "GfJjctCJCfYPtqwZ",
+  "tags": [
+    {
+      "updatedAt": "2026-05-16T09:44:03.857Z",
+      "createdAt": "2026-05-16T09:44:03.857Z",
+      "id": "7IZSfvvIgSgAKAUK",
+      "name": "chatbot"
+    },
+    {
+      "updatedAt": "2026-05-16T09:44:03.754Z",
+      "createdAt": "2026-05-16T09:44:03.754Z",
+      "id": "IdAwBylkedEPDepz",
+      "name": "chess"
+    },
+    {
+      "updatedAt": "2026-05-16T09:44:03.828Z",
+      "createdAt": "2026-05-16T09:44:03.828Z",
+      "id": "WWBpyo9Lqml8zrk1",
+      "name": "AI"
+    },
+    {
+      "updatedAt": "2026-05-16T09:44:03.790Z",
+      "createdAt": "2026-05-16T09:44:03.790Z",
+      "id": "hLKT8RFaFsy6gMUy",
+      "name": "gemini"
+    }
+  ]
+}
