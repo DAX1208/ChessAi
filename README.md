@@ -2,7 +2,7 @@
 
 A lightweight browser-based AI chat interface that sends user messages to an n8n webhook and displays assistant responses in a minimal chat UI.
 
-Repository: https://github.com/DAX1208/ChessAi.git
+
 
 ## Project structure
 
