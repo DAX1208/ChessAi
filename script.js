@@ -1,4 +1,4 @@
-const WEBHOOK_URL = 'https://devangi.app.n8n.cloud/webhook/chess-chatbot-webhook-001/chat';
+const WEBHOOK_URL = 'https://devangi.app.n8n.cloud/webhook/chess-chatbot-webhook-001';
 const chatForm = document.getElementById('chatForm');
 const chatInput = document.getElementById('chatInput');
 const sendButton = document.getElementById('sendButton');

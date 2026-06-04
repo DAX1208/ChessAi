@@ -271,6 +271,17 @@ body {
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(134,216,255,0.28);
+  }
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 14px rgba(134,216,255,0.04);
+  }
+}
+
 .suggestion-chip:hover {
   transform: translateY(-1px);
   border-color: rgba(134,216,255,0.26);
