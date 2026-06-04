@@ -15,7 +15,7 @@ A lightweight browser-based AI chat interface that sends user messages to an n8n
 
 The client uses the webhook URL configured in `script.js`:
 
-`https://devangi.app.n8n.cloud/webhook/chess-chatbot-webhook-001/chat`
+
 
 ## How it works
 
@@ -28,7 +28,7 @@ The client uses the webhook URL configured in `script.js`:
 
 The `AI Chess Chatbot.json` definition includes:
 
-- `When Chat Message Received` - webhook trigger node using `webhookId: chess-chatbot-webhook-001`.
+- `When Chat Message Received` - webhook trigger node using `webhook`.
 - `AI Agent` - LangChain agent configured as a chess coach and analysis assistant.
 - `Window Buffer Memory` - memory buffer to maintain conversational context.
 - `SerpAPI Web Search` - optional search tool for live chess news and rankings.
