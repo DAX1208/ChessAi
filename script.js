@@ -1,4 +1,6 @@
-const WEBHOOK_URL = 'https://devangi.app.n8n.cloud/webhook/chess-chatbot-webhook-001';
+const API_URL = '/api/chat';
+const SESSION_KEY = 'chesschat_session_id';
+
 const chatForm = document.getElementById('chatForm');
 const chatInput = document.getElementById('chatInput');
 const sendButton = document.getElementById('sendButton');
@@ -7,6 +9,16 @@ const emptyState = document.getElementById('emptyState');
 
 const suggestionButtons = document.querySelectorAll('.suggestion-chip');
 let isSending = false;
+let typingIndicator = null;
+
+function getSessionId() {
+  let id = sessionStorage.getItem(SESSION_KEY);
+  if (!id) {
+    id = `session_${crypto.randomUUID()}`;
+    sessionStorage.setItem(SESSION_KEY, id);
+  }
+  return id;
+}
 
 function createBubble(role, text) {
   const bubble = document.createElement('section');
@@ -29,12 +41,71 @@ function setLoadingState(active) {
   sendButton.textContent = active ? 'Sending…' : 'Send message';
 }
 
+function showTypingIndicator() {
+  removeTypingIndicator();
+  typingIndicator = createBubble('ai', '…');
+  typingIndicator.classList.add('typing-indicator');
+  chatWindow.appendChild(typingIndicator);
+  scrollToBottom();
+}
+
+function removeTypingIndicator() {
+  if (typingIndicator) {
+    typingIndicator.remove();
+    typingIndicator = null;
+  }
+}
+
 function showError(message) {
   const errorBubble = createBubble('ai', message);
-  errorBubble.style.borderColor = 'rgba(248,113,113,0.35)';
-  errorBubble.style.background = 'rgba(248,113,113,0.1)';
+  errorBubble.classList.add('message-error');
   chatWindow.appendChild(errorBubble);
   scrollToBottom();
+}
+
+function extractReply(payload) {
+  if (!payload || typeof payload !== 'object') {
+    return typeof payload === 'string' ? payload : null;
+  }
+
+  const candidates = [
+    payload.output,
+    payload.text,
+    payload.answer,
+    payload.response,
+    typeof payload.message === 'string' ? payload.message : null,
+    payload.data?.output,
+    payload.data?.text,
+  ];
+
+  for (const value of candidates) {
+    if (typeof value === 'string' && value.trim()) {
+      return value;
+    }
+  }
+
+  if (Array.isArray(payload)) {
+    return extractReply(payload[0]?.json ?? payload[0]);
+  }
+
+  return null;
+}
+
+function friendlyError(error, responsePayload) {
+  if (responsePayload?.error) {
+    return responsePayload.error;
+  }
+
+  const message = error?.message || '';
+
+  if (message === 'Failed to fetch') {
+    if (window.location.protocol === 'file:') {
+      return 'This page was opened as a file. Run `npm start` in the project folder, then open http://localhost:3000.';
+    }
+    return 'Cannot reach the chat server. Run `npm start` in the project folder and use http://localhost:3000.';
+  }
+
+  return message || 'Check your webhook URL and network connection.';
 }
 
 async function sendMessage(text) {
@@ -48,29 +119,37 @@ async function sendMessage(text) {
   chatWindow.appendChild(userBubble);
   scrollToBottom();
   setLoadingState(true);
+  showTypingIndicator();
 
   try {
-    const response = await fetch(WEBHOOK_URL, {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message: text.trim() })
+      body: JSON.stringify({
+        message: text.trim(),
+        sessionId: getSessionId(),
+      }),
     });
 
+    const payload = await response.json().catch(() => null);
+
     if (!response.ok) {
-      const errorText = await response.text().catch(() => 'No response body');
-      throw new Error(`Webhook returned ${response.status}: ${errorText}`);
+      throw new Error(friendlyError(null, payload));
     }
 
-    const payload = await response.json().catch(() => null);
-    const reply = payload?.answer || payload?.response || payload?.message || JSON.stringify(payload) || 'The webhook responded with no message.';
+    const reply =
+      extractReply(payload) ||
+      'The assistant responded, but no text was found. Check the n8n workflow output format.';
 
+    removeTypingIndicator();
     const assistantBubble = createBubble('ai', reply);
     chatWindow.appendChild(assistantBubble);
   } catch (error) {
     console.error(error);
-    showError('Unable to send message. Check your webhook URL and network connection.');
+    removeTypingIndicator();
+    showError(`Unable to send message. ${friendlyError(error)}`);
   } finally {
     setLoadingState(false);
     chatInput.value = '';
@@ -79,7 +158,7 @@ async function sendMessage(text) {
   }
 }
 
-chatForm.addEventListener('submit', event => {
+chatForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const message = chatInput.value;
   if (message.trim()) {
@@ -91,7 +170,7 @@ chatInput.addEventListener('input', () => {
   sendButton.disabled = isSending || !chatInput.value.trim();
 });
 
-chatInput.addEventListener('keydown', event => {
+chatInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter' && !event.shiftKey) {
     event.preventDefault();
     if (chatInput.value.trim() && !isSending) {
@@ -100,7 +179,7 @@ chatInput.addEventListener('keydown', event => {
   }
 });
 
-suggestionButtons.forEach(button => {
+suggestionButtons.forEach((button) => {
   button.addEventListener('click', () => {
     const message = button.dataset.message;
     if (message) {
@@ -111,5 +190,10 @@ suggestionButtons.forEach(button => {
 });
 
 window.addEventListener('load', () => {
+  if (window.location.protocol === 'file:') {
+    showError(
+      'Opened as a local file — the webhook cannot be called from here. Run `npm start` and open http://localhost:3000 instead.'
+    );
+  }
   chatInput.focus();
 });

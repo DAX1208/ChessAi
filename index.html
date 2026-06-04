@@ -10,33 +10,32 @@
   <section class="chat-shell" aria-label="AI chat interface">
     <header class="hero">
       <div class="hero-title">
-        <h1>ChessAI</h1>
-        <p>Talk to your AI assistant directly from the browser. This page sends your questions to a webhook endpoint and renders the assistant response in a sleek, minimal chat interface.</p>
+        <h1>Chess Master</h1>
+        <p>Your AI chess companion — openings, strategy, and game analysis.</p>
       </div>
       <div class="hero-badge">Live Bot</div>
     </header>
 
     <main class="chat-window" id="chatWindow" aria-live="polite" tabindex="0">
       <div class="empty-state" id="emptyState">
-        <h2>Ask anything.</h2>
-        <p>Start a conversation by sending a question to your webhook. The assistant response appears here instantly.</p>
+        <h2>Welcome to Chess Master</h2>
+        <p>Ask about openings, strategies, famous games, or get help analyzing a position.</p>
         <div class="suggestions">
-          <button class="suggestion-chip" type="button" data-message="Explain the French Defense in chess." aria-label="Use suggested question">Explain the French Defense</button>
-          <button class="suggestion-chip" type="button" data-message="What is the best way to prepare for a coding interview?" aria-label="Use suggested question">Prepare for a coding interview</button>
-          <button class="suggestion-chip" type="button" data-message="Give me a creative weekend project idea." aria-label="Use suggested question">Weekend project idea</button>
+          <button class="suggestion-chip" type="button" data-message="What is the Italian Game?" aria-label="Use suggested question">Explain openings</button>
+          <button class="suggestion-chip" type="button" data-message="Help me with this endgame" aria-label="Use suggested question">Analyze position</button>
+          <button class="suggestion-chip" type="button" data-message="Tell me about the Immortal Game" aria-label="Use suggested question">Famous games</button>
         </div>
       </div>
     </main>
 
     <form class="input-panel" id="chatForm">
       <div class="input-area">
-        <textarea id="chatInput" rows="3" placeholder="Type your message." aria-label="Type your message"></textarea>
+        <textarea id="chatInput" rows="3" placeholder="Ask about chess openings, strategies, or analyze a position…" aria-label="Type your message"></textarea>
       </div>
       <div class="actions">
         <button type="submit" id="sendButton">Send message</button>
         <div class="info-row">
-          <span class="status-pill"><span class="status-dot"></span> Live webhook mode</span>
-          <span style="font-size:0.92rem; color:#8ea9d4;">Replace <code>WEBHOOK_URL</code> with your endpoint.</span>
+          <span class="status-pill"><span class="status-dot"></span> Connected via local server</span>
         </div>
       </div>
     </form>

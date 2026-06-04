@@ -1,0 +1,4 @@
+node_modules/
+chess-ai-chat/
+.env
+.env.*
