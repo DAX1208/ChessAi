@@ -59,13 +59,14 @@ async function sendMessage(text) {
     });
 
     if (!response.ok) {
-      throw new Error(`Webhook returned ${response.status}`);
+      const errorText = await response.text().catch(() => 'No response body');
+      throw new Error(`Webhook returned ${response.status}: ${errorText}`);
     }
 
-    const payload = await response.json();
-    const reply = payload?.answer || payload?.response || payload?.message || JSON.stringify(payload);
+    const payload = await response.json().catch(() => null);
+    const reply = payload?.answer || payload?.response || payload?.message || JSON.stringify(payload) || 'The webhook responded with no message.';
 
-    const assistantBubble = createBubble('ai', reply || 'The webhook responded with no message.');
+    const assistantBubble = createBubble('ai', reply);
     chatWindow.appendChild(assistantBubble);
   } catch (error) {
     console.error(error);
