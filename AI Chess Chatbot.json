@@ -7,13 +7,13 @@
         "mode": "webhook",
         "options": {}
       },
-      "id": "525de15a-3266-4e32-9398-4d47651daeb1",
+      "id": "a1afffe2-e970-45d8-8d08-d37ea9164013",
       "name": "When Chat Message Received",
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1,
       "position": [
-        416,
-        -368
+        0,
+        0
       ],
       "webhookId": "chess-chatbot-webhook-001",
       "alwaysOutputData": true,
@@ -26,13 +26,13 @@
       "parameters": {
         "contextWindowLength": 10
       },
-      "id": "f9802017-50a3-4531-86e3-609ba9649bd7",
+      "id": "ce5a4504-c285-4bb9-8257-887f35f201aa",
       "name": "Window Buffer Memory",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.2,
       "position": [
-        704,
-        -144
+        288,
+        224
       ],
       "notesInFlow": false,
       "retryOnFail": false,
@@ -44,17 +44,17 @@
       "parameters": {
         "options": {}
       },
-      "id": "f6271199-d237-4708-9095-35b37cd28790",
+      "id": "6c023b3b-c0ff-4b87-9952-1572602f3ae0",
       "name": "SerpAPI Web Search",
       "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
       "typeVersion": 1,
       "position": [
-        912,
-        -192
+        496,
+        176
       ],
       "credentials": {
         "serpApi": {
-          "id": "GtC6SGO6rJ6dtXeu",
+          "id": "wzRNxagUyoD1mwE1",
           "name": "SerpAPI account"
         }
       }
@@ -68,10 +68,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        640,
-        -368
+        224,
+        0
       ],
-      "id": "526ae270-04ff-4dc9-adda-f49d182cdab3",
+      "id": "ab3a60fc-0b7f-4059-9f00-27233ecac482",
       "name": "AI Agent",
       "retryOnFail": true,
       "executeOnce": false,
@@ -91,16 +91,16 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        544,
-        -144
+        128,
+        224
       ],
-      "id": "8c83bd53-a0d2-4d69-ac12-b5901eecee49",
+      "id": "5e9dd691-1db9-4263-a63b-c2ca61d3997d",
       "name": "Groq Chat Model",
       "notesInFlow": true,
       "credentials": {
         "groqApi": {
-          "id": "yijsRFsuB0wZlV4J",
-          "name": "Groq account 2"
+          "id": "OYxwg4Uw72348Y7K",
+          "name": "Groq account"
         }
       },
       "notes": "Chess Analysis Bot - Groq qwen3-32b\nAnalyzes games and gives coaching tips"
@@ -153,44 +153,41 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "timeSavedMode": "fixed",
-    "callerPolicy": "workflowsFromSameOwner",
-    "availableInMCP": false
+    "binaryMode": "separate"
   },
-  "versionId": "0d021efc-d1d9-4183-ad3f-c84114cd59d3",
+  "versionId": "414701e0-4b6b-4633-bc99-6732b3ae8508",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "fe1216196bf66cea97cb63acfcdc6053a58079b7d50c17a6c3057ca93b6e674c"
+    "instanceId": "10d35f720b115f1dae08ba4df8fe2840cf14f530ae45a6604ae0b08ead803a20"
   },
-  "id": "GfJjctCJCfYPtqwZ",
+  "id": "zlcVLmfhSulaXi3I",
   "tags": [
     {
-      "updatedAt": "2026-05-16T09:44:03.857Z",
-      "createdAt": "2026-05-16T09:44:03.857Z",
-      "id": "7IZSfvvIgSgAKAUK",
-      "name": "chatbot"
-    },
-    {
-      "updatedAt": "2026-05-16T09:44:03.754Z",
-      "createdAt": "2026-05-16T09:44:03.754Z",
-      "id": "IdAwBylkedEPDepz",
-      "name": "chess"
-    },
-    {
-      "updatedAt": "2026-05-16T09:44:03.828Z",
-      "createdAt": "2026-05-16T09:44:03.828Z",
-      "id": "WWBpyo9Lqml8zrk1",
+      "updatedAt": "2026-06-04T13:25:50.653Z",
+      "createdAt": "2026-06-04T13:25:50.653Z",
+      "id": "4UPGglEOrBfR3br5",
       "name": "AI"
     },
     {
-      "updatedAt": "2026-05-16T09:44:03.790Z",
-      "createdAt": "2026-05-16T09:44:03.790Z",
-      "id": "hLKT8RFaFsy6gMUy",
+      "updatedAt": "2026-06-04T13:25:50.711Z",
+      "createdAt": "2026-06-04T13:25:50.711Z",
+      "id": "7gfQmxfpUdYOZQah",
       "name": "gemini"
+    },
+    {
+      "updatedAt": "2026-06-04T13:25:50.502Z",
+      "createdAt": "2026-06-04T13:25:50.502Z",
+      "id": "CKWo18A58r2z0VkJ",
+      "name": "chatbot"
+    },
+    {
+      "updatedAt": "2026-06-04T13:25:50.552Z",
+      "createdAt": "2026-06-04T13:25:50.552Z",
+      "id": "vljk22iqnxKYroWb",
+      "name": "chess"
     }
   ]
 }

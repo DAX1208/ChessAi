@@ -1,14 +1,47 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=frontend/index.html">
-    <title>Chess Chatbot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Webhook Chat</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Redirecting to the Chess Chatbot app…</p>
-    <script>
-        window.location.href = 'frontend/index.html';
-    </script>
+  <section class="chat-shell" aria-label="AI chat interface">
+    <header class="hero">
+      <div class="hero-title">
+        <h1>AI Chat via Webhook</h1>
+        <p>Talk to your AI assistant directly from the browser. This page sends your questions to a webhook endpoint and renders the assistant response in a sleek, minimal chat interface.</p>
+      </div>
+      <div class="hero-badge">Webhook Ready</div>
+    </header>
+
+    <main class="chat-window" id="chatWindow" aria-live="polite" tabindex="0">
+      <div class="empty-state" id="emptyState">
+        <h2>Ask anything.</h2>
+        <p>Start a conversation by sending a question to your webhook. The assistant response appears here instantly.</p>
+        <div class="suggestions">
+          <button class="suggestion-chip" type="button" data-message="Explain the French Defense in chess." aria-label="Use suggested question">Explain the French Defense</button>
+          <button class="suggestion-chip" type="button" data-message="What is the best way to prepare for a coding interview?" aria-label="Use suggested question">Prepare for a coding interview</button>
+          <button class="suggestion-chip" type="button" data-message="Give me a creative weekend project idea." aria-label="Use suggested question">Weekend project idea</button>
+        </div>
+      </div>
+    </main>
+
+    <form class="input-panel" id="chatForm">
+      <div class="input-area">
+        <textarea id="chatInput" rows="3" placeholder="Type your message." aria-label="Type your message"></textarea>
+      </div>
+      <div class="actions">
+        <button type="submit" id="sendButton">Send message</button>
+        <div class="info-row">
+          <span class="status-pill"><span class="status-dot"></span> Live webhook mode</span>
+          <span style="font-size:0.92rem; color:#8ea9d4;">Replace <code>WEBHOOK_URL</code> with your endpoint.</span>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <script src="script.js"></script>
 </body>
 </html>
